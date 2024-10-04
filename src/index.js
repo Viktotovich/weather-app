@@ -1,4 +1,5 @@
 /* eslint-disable */
 import { requestsController } from "./components/requests-manager";
+import { domController } from "./components/dom-manager";
 
-//requestsController.createRequest("dubai");
+domController.initiateDom();

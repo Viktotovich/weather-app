@@ -10,18 +10,23 @@
       <!--Header-->
       <div id="header-container">
         <div class="logo-container"></div>
-        <form>
-          <label for="search">Search for a city:</label>
-          <input
-            type="text"
-            id="search"
-            name="search"
-            minlength="4"
-            maxlength="56"
-            placeholder="Dubai"
-            required
-          />
-          <button id="submit-search">Search</button>
+        <form autocomplete="off">
+          <div class="form-container">
+            <label for="search">Search for a city:</label>
+            <input
+              type="text"
+              id="search"
+              name="search"
+              minlength="4"
+              maxlength="56"
+              placeholder="Dubai"
+              list="search-suggestions"
+              required
+            />
+            <datalist id="search-suggestions"></datalist>
+            <button id="submit-search">Search</button>
+          </div>
+          <span id="search-error-display"></span>
         </form>
         <div class="temperature-toggle">Click to toggle units F/C</div>
       </div>
