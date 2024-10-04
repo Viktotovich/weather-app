@@ -1,18 +1,25 @@
 /* eslint-disable */
-//import { requestsController } from "./components/requests-manager";
+import { dataProcessor, requestsController } from "./requests-manager";
 //requestsController.createRequest("dubai");
 
-//import capitals.json to aid with the search box
 import capitals from "./json/capitals.json";
 
 // This imports everything, and does not export anything except the function to initiate
+
+let preferredTemparature = "C";
 
 const domController = {
   initiateDom: function () {
     const suggestionContainer = document.querySelector("#search-suggestions");
     const submitSearch = document.querySelector("#submit-search");
+    const toggleTemperature = document.querySelector(".temperature-toggle");
 
     submitSearch.addEventListener("click", domController.searchWeather);
+    toggleTemperature.addEventListener(
+      "click",
+      domController.changePreferredTemp
+    );
+
     this.fillSuggestions(suggestionContainer);
   },
   searchWeather: function (e) {
@@ -35,6 +42,13 @@ const domController = {
 
       suggestionContainer.appendChild(capitalContainer);
     });
+  },
+  changePreferredTemp: function () {
+    if (preferredTemparature === "C") {
+      preferredTemparature = "F";
+    } else {
+      preferredTemparature = "C";
+    }
   },
 };
 

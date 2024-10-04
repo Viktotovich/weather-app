@@ -134,4 +134,4 @@ const dataProcessor = {
   },
 };
 
-export { requestsController };
+export { requestsController, dataProcessor };
