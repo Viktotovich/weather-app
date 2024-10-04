@@ -27,13 +27,27 @@ const domController = {
     const searchInput = document.querySelector("#search");
     const searchValue = searchInput.value;
 
-    if (errorChecker.checkInput(searchValue) === true) {
+    if (errorChecker.checkInput(searchInput) === true) {
       searchInput.setAttribute("class", "valid-search");
       errorChecker.clearErrorDisplay();
-      //submit search
+
+      requestsController
+        .createRequest(searchValue)
+        .then((replyObj) => {
+          domController.receiveReply(replyObj);
+        })
+        .catch((err) => {
+          console.error(`${err.name} at ${err.stack}. ${err}`);
+        });
     } else {
       searchInput.setAttribute("class", "invalid-search");
     }
+  },
+  receiveReply: function ({ currentPeriod, weatherPeriod }) {
+    console.log(currentPeriod, weatherPeriod);
+    //Get stuff from requests Controller
+
+    //forEach weatherPeriod create a weather card, and append it. You need icons for this
   },
   fillSuggestions: function (suggestionContainer) {
     Object.values(capitals).forEach((capital) => {
@@ -57,11 +71,15 @@ const errorChecker = {
   clearErrorDisplay: function () {
     errorChecker.searchErrorDisplay.textContent = "";
   },
-  checkInput: function (inputValue) {
-    if (inputValue.validity.tooShort) {
+  checkInput: function (searchInput) {
+    const inputValue = searchInput.value;
+    if (!inputValue) {
+      this.searchErrorDisplay.textContent =
+        "You cannot leave the search field blank!";
+    } else if (searchInput.validity.tooShort) {
       this.searchErrorDisplay.textContent = "Not enough characters entered";
       return false;
-    } else if (inputValue.validity.tooLong) {
+    } else if (searchInput.validity.tooLong) {
       this.searchErrorDisplay.textContent = "Too many characters entered";
       return false;
     } else {

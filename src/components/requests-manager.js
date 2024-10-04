@@ -95,8 +95,11 @@ const requestsController = {
       if (data.status >= 200 && data.status < 300) {
         const json = await data.json();
 
-        dataProcessor.processCurrent(json);
-        dataProcessor.processDataPeriod(json);
+        //maybe return this - so it can be picked-up at receiveReply on DOM?
+        const currentPeriod = await dataProcessor.processCurrent(json);
+        const weatherPeriod = await dataProcessor.processDataPeriod(json);
+
+        return { currentPeriod, weatherPeriod };
       } else {
         throw new Error(
           `The request was rejected! HTTP Status: ${data.status}`
@@ -117,7 +120,7 @@ const dataProcessor = {
     const currentConditionsObj = new CurrentWeather(json.currentConditions);
 
     this.currentPeriod.push(currentConditionsObj);
-    console.log(this.currentPeriod);
+    return this.currentPeriod;
   },
   processDataPeriod: function (json) {
     this.dayIndex *= 0;
@@ -127,7 +130,7 @@ const dataProcessor = {
 
       this.weatherPeriod.push(dayObj);
     });
-    console.log(this.weatherPeriod);
+    return this.weatherPeriod;
   },
   resetWeatherPeriod: function () {
     dataProcessor.weatherPeriod = [];
