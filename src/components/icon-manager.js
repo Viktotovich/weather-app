@@ -43,15 +43,16 @@ function setIconClass() {
     fog: fogIcon,
     wind: windIcon,
     cloudy: cloudyIcon,
-    //CHANGE THIS:
-    "Partially cloudy day": partlyCloudyDay,
-    "Partially cloudy night": partlyCloudyNight,
-    clearDay: clearDayIcon,
-    clearNight: clearNightIcon,
-    thunderRain: thunderRainIcon,
-    showersNight: showersNightIcon,
+    "partly-cloudy-day": partlyCloudyDay,
+    "partly-cloudy-night": partlyCloudyNight,
+    "clear-day": clearDayIcon,
+    "clear-night": clearNightIcon,
+    "thunder-rain": thunderRainIcon,
+    "showers-night": showersNightIcon,
+    "showers-night": showersDayIcon,
+
+    //obsolete-icons :(
     hazyDay: hazyDayIcon,
-    showersDay: showersDayIcon,
     sleet: sleetIcon,
     highHumidity: highHumidityIcon,
     blizzard: blizzardIcon,
@@ -67,26 +68,9 @@ function setIconClass() {
 }
 
 const iconFinder = {
-  processCondition: function (
-    condition,
-    time,
-    sunsetTime,
-    sunriseTime,
-    timeRelevance
-  ) {
-    const currentTime = iconFinder.checkTime(time, sunriseTime, sunsetTime);
-    if (timeRelevance === true) {
-      return weatherIcons[`${condition} ${time}`];
-    } else {
-      return weatherIcons[`${condition}`];
-    }
-  },
-  checkTime: function (time, sunriseTime, sunsetTime) {
-    if (time >= sunriseTime && time <= sunsetTime) {
-      return "day";
-    } else {
-      return "night";
-    }
+  processCondition: function (iconName) {
+    console.log(weatherIcons[iconName]);
+    return weatherIcons[iconName];
   },
 };
 

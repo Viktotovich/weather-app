@@ -72,9 +72,6 @@ const domController = {
 const currentWeatherController = {
   processCurrentWeather: function (data) {
     //forEach weatherPeriod's hour create a weather card, and append it. You need icons for this
-    const currentWeatherIconContainer = document.querySelector(
-      ".current-weather-icon"
-    );
     const cityName = document.querySelector("#city-name");
     const localTime = document.querySelector("#local-time");
     const currentTemp = document.querySelector(".current-temp");
@@ -83,6 +80,8 @@ const currentWeatherController = {
       ".current-weather-description"
     );
     const currentWeatherIcon = document.querySelector(".current-weather-icon");
+    console.log(currentWeatherIcon);
+    const weatherIcon = iconFinder.processCondition(data.icon);
 
     localTime.textContent = data.dateTimePeriod;
     currentTemp.textContent = data.tempC;
@@ -90,15 +89,8 @@ const currentWeatherController = {
     weatherDescription.textContent = data.description;
 
     //find the right icon based on condition
-    currentWeatherIcon.append(
-      iconFinder.processCondition(
-        data.condition,
-        data.dateTimePeriod,
-        data.sunrise,
-        data.sunset,
-        true
-      )
-    );
+
+    currentWeatherIcon.appendChild(weatherIcon);
 
     moreInfo.addEventListener("click", currentWeatherController.openMoreInfo);
   },
