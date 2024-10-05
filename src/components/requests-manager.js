@@ -74,7 +74,7 @@ class CurrentWeather {
 
     this.icon = json.icon;
 
-    this.address = address;
+    this.address = this.capitalizeFirstLetter(address);
     this.description = description;
   }
 
@@ -89,6 +89,11 @@ class CurrentWeather {
     } else {
       return json.precip;
     }
+  }
+
+  capitalizeFirstLetter(address) {
+    const processedStr = address.toString();
+    return processedStr.charAt(0).toUpperCase() + processedStr.slice(1);
   }
 }
 

@@ -69,8 +69,8 @@ function setIconClass() {
 
 const iconFinder = {
   processCondition: function (iconName) {
-    console.log(weatherIcons[iconName]);
-    return weatherIcons[iconName];
+    console.log(weatherIcons[iconName].getIcon());
+    return weatherIcons[iconName].getIcon();
   },
 };
 

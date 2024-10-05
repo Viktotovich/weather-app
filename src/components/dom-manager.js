@@ -80,7 +80,7 @@ const currentWeatherController = {
       ".current-weather-description"
     );
     const currentWeatherIcon = document.querySelector(".current-weather-icon");
-    console.log(currentWeatherIcon);
+
     const weatherIcon = iconFinder.processCondition(data.icon);
 
     localTime.textContent = data.dateTimePeriod;
@@ -88,10 +88,10 @@ const currentWeatherController = {
     cityName.textContent = data.address;
     weatherDescription.textContent = data.description;
 
-    //find the right icon based on condition
-
+    //find the right icon
     currentWeatherIcon.appendChild(weatherIcon);
 
+    //TODO: Garbage collect old eventListeners, best case would be if we strip everything from index.html and add it in through DOM
     moreInfo.addEventListener("click", currentWeatherController.openMoreInfo);
   },
   openMoreInfo: function () {
