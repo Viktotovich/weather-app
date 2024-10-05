@@ -48,6 +48,8 @@ const domController = {
     //Get stuff from requests Controller
 
     //forEach weatherPeriod create a weather card, and append it. You need icons for this
+
+    //process currentPeriod, and process weatherPeriod
   },
   fillSuggestions: function (suggestionContainer) {
     Object.values(capitals).forEach((capital) => {
