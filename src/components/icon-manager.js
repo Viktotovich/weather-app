@@ -5,7 +5,7 @@ import snowIcon from "./icons/snow.png";
 import rainIcon from "./icons/rain.png";
 import fogIcon from "./icons/fog.png";
 import windIcon from "./icons/wind.png";
-import cloudyIcon from "./icons/wind.png";
+import cloudyIcon from "./icons/cloudy.png";
 import partlyCloudyDay from "./icons/partly-cloudy-day.png";
 import partlyCloudyNight from "./icons/partly-cloudy-night.png";
 import clearDayIcon from "./icons/clear-day.png";
@@ -20,7 +20,7 @@ import blizzardIcon from "./icons/blizzard.png";
 import hailIcon from "./icons/hail.png";
 import dustStormDayIcon from "./icons/dust-storm-day.png";
 import tornadoAlertIcon from "./icons/tornado-alert.png";
-import earthquakeAlertIcon from "./icons/earthquare-alert.png";
+import earthquakeAlertIcon from "./icons/earthquake-alert.png";
 
 class WeatherIcon {
   constructor(media) {
@@ -34,10 +34,60 @@ class WeatherIcon {
   }
 }
 
-const weatherIcons = [];
+const weatherIcons = {};
 
-function iconManager() {
-  //Append all to the arr
+function setIconClass() {
+  const iconMap = {
+    snow: snowIcon,
+    rain: rainIcon,
+    fog: fogIcon,
+    wind: windIcon,
+    cloudy: cloudyIcon,
+    //CHANGE THIS:
+    "Partially cloudy day": partlyCloudyDay,
+    "Partially cloudy night": partlyCloudyNight,
+    clearDay: clearDayIcon,
+    clearNight: clearNightIcon,
+    thunderRain: thunderRainIcon,
+    showersNight: showersNightIcon,
+    hazyDay: hazyDayIcon,
+    showersDay: showersDayIcon,
+    sleet: sleetIcon,
+    highHumidity: highHumidityIcon,
+    blizzard: blizzardIcon,
+    hail: hailIcon,
+    dustStormDay: dustStormDayIcon,
+    tornadoAlert: tornadoAlertIcon,
+    earthquakeAlert: earthquakeAlertIcon,
+  };
+
+  for (const [key, icon] of Object.entries(iconMap)) {
+    weatherIcons[key] = new WeatherIcon(icon);
+  }
 }
 
-iconManager();
+const iconFinder = {
+  processCondition: function (
+    condition,
+    time,
+    sunsetTime,
+    sunriseTime,
+    timeRelevance
+  ) {
+    const currentTime = iconFinder.checkTime(time, sunriseTime, sunsetTime);
+    if (timeRelevance === true) {
+      return weatherIcons[`${condition} ${time}`];
+    } else {
+      return weatherIcons[`${condition}`];
+    }
+  },
+  checkTime: function (time, sunriseTime, sunsetTime) {
+    if (time >= sunriseTime && time <= sunsetTime) {
+      return "day";
+    } else {
+      return "night";
+    }
+  },
+};
+
+export { setIconClass, iconFinder };

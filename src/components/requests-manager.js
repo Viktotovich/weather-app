@@ -7,21 +7,26 @@ class WeatherDay {
     //must be json.days[index] to work correctly
     this.conditions = json.conditions;
     this.dateTime = json.datetime;
-    this.feelsLikeMaxTempF = json.feelslikemax;
-    this.feelsLikeMinTempF = json.feelslikemin;
+
+    this.feelsLikeMaxTempF = `${json.feelslikemax}°F`;
+    this.feelsLikeMaxTempC = `${this.convertFtoC(json.feelslikemax)}°C`;
+
+    this.feelsLikeMinTempF = `${json.feelslikemin}°F`;
+    this.feelsLikeMinTempC = `${this.convertFtoC(json.feelslikemin)}°C`;
+
     this.humidity = json.humidity;
 
     this.precip = this.getPrecip(json);
     this.snow = json.snow;
 
-    this.dayTempF = json.temp;
-    this.dayTempC = this.convertFtoC(this.dayTempF);
+    this.dayTempF = `${json.temp}°F`;
+    this.dayTempC = `${this.convertFtoC(json.temp)}°C`;
 
-    this.dayTempMaxF = json.tempmax;
-    this.dayTempMaxC = this.convertFtoC(this.dayTempMaxF);
+    this.dayTempMaxF = `${json.tempmax}°F`;
+    this.dayTempMaxC = `${this.convertFtoC(json.tempmax)}°C`;
 
-    this.dayTempMinF = json.tempmin;
-    this.dayTempMinC = this.convertFtoC(this.dayTempMinF);
+    this.dayTempMinF = `${json.tempmin}°F`;
+    this.dayTempMinC = `${this.convertFtoC(json.tempmin)}°C`;
 
     this.sunrise = json.sunrise;
     this.sunset = json.sunset;
@@ -49,12 +54,12 @@ class WeatherDay {
 }
 
 class CurrentWeather {
-  constructor(json) {
+  constructor(json, address, description) {
     this.conditions = json.conditions;
     this.dateTimePeriod = json.datetime;
 
-    this.feelsLikeF = json.feelslike;
-    this.feelsLikeC = this.convertFtoC(this.feelsLikeF);
+    this.feelsLikeF = `${json.feelslike}°F`;
+    this.feelsLikeC = `${this.convertFtoC(json.feelslike)}°C`;
 
     this.humidity = json.humidity;
     this.pricip = this.getPrecip(json);
@@ -62,8 +67,12 @@ class CurrentWeather {
 
     this.sunrise = json.sunrise;
     this.sunset = json.sunset;
-    this.tempF = json.temp;
-    this.tempC = this.convertFtoC(this.tempF);
+
+    this.tempF = `${json.temp}°F`;
+    this.tempC = `${this.convertFtoC(json.temp)}°C`;
+
+    this.address = address;
+    this.description = description;
   }
 
   convertFtoC(tempInF) {
@@ -117,7 +126,11 @@ const dataProcessor = {
   currentPeriod: [],
   dayIndex: 0,
   processCurrent: function (json) {
-    const currentConditionsObj = new CurrentWeather(json.currentConditions);
+    const currentConditionsObj = new CurrentWeather(
+      json.currentConditions,
+      json.address,
+      json.description
+    );
 
     this.currentPeriod.push(currentConditionsObj);
     return this.currentPeriod;

@@ -3,6 +3,7 @@ import { dataProcessor, requestsController } from "./requests-manager";
 //requestsController.createRequest("dubai");
 
 import capitals from "./json/capitals.json";
+import { iconFinder } from "./icon-manager";
 
 // This imports everything, and does not export anything except the function to initiate
 
@@ -45,11 +46,11 @@ const domController = {
   },
   receiveReply: function ({ currentPeriod, weatherPeriod }) {
     console.log(currentPeriod, weatherPeriod);
-    //Get stuff from requests Controller
-
-    //forEach weatherPeriod create a weather card, and append it. You need icons for this
 
     //process currentPeriod, and process weatherPeriod
+    currentWeatherController.processCurrentWeather(currentPeriod[0]);
+
+    weatherPeriodController.processWeatherPeriod(weatherPeriod[0]);
   },
   fillSuggestions: function (suggestionContainer) {
     Object.values(capitals).forEach((capital) => {
@@ -68,6 +69,49 @@ const domController = {
   },
 };
 
+const currentWeatherController = {
+  processCurrentWeather: function (data) {
+    //forEach weatherPeriod's hour create a weather card, and append it. You need icons for this
+    const currentWeatherIconContainer = document.querySelector(
+      ".current-weather-icon"
+    );
+    const cityName = document.querySelector("#city-name");
+    const localTime = document.querySelector("#local-time");
+    const currentTemp = document.querySelector(".current-temp");
+    const moreInfo = document.querySelector(".more-info");
+    const weatherDescription = document.querySelector(
+      ".current-weather-description"
+    );
+    const currentWeatherIcon = document.querySelector(".current-weather-icon");
+
+    localTime.textContent = data.dateTimePeriod;
+    currentTemp.textContent = data.tempC;
+    cityName.textContent = data.address;
+    weatherDescription.textContent = data.description;
+
+    //find the right icon based on condition
+    currentWeatherIcon.append(
+      iconFinder.processCondition(
+        data.condition,
+        data.dateTimePeriod,
+        data.sunrise,
+        data.sunset,
+        true
+      )
+    );
+
+    moreInfo.addEventListener("click", currentWeatherController.openMoreInfo);
+  },
+  openMoreInfo: function () {
+    //create a modal, the modal will contain all other information
+  },
+};
+
+const weatherPeriodController = {
+  processWeatherPeriod: function (weatherPeriodData) {
+    //
+  },
+};
 const errorChecker = {
   searchErrorDisplay: document.querySelector("#search-error-display"),
   clearErrorDisplay: function () {
