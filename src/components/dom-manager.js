@@ -68,10 +68,17 @@ const domController = {
     });
   },
   changePreferredTemp: function () {
+    const fUnit = document.querySelector("#F");
+    const cUnit = document.querySelector("#C");
+
     if (preferredTemparature === "C") {
       preferredTemparature = "F";
+      cUnit.removeAttribute("class");
+      fUnit.setAttribute("class", "selectedTemp");
     } else {
       preferredTemparature = "C";
+      fUnit.removeAttribute("class");
+      cUnit.setAttribute("class", "selectedTemp");
     }
   },
 };
@@ -86,7 +93,6 @@ const currentWeatherController = {
       ".current-weather-description"
     );
     const currentWeatherIcon = document.querySelector(".current-weather-icon");
-
     const weatherIcon = iconFinder.processCondition(data.icon);
 
     currentWeatherIcon.textContent = "";
@@ -108,7 +114,6 @@ const currentWeatherController = {
     modal.showModal();
   },
   createMoreInfoCard: function (currentData, modal) {
-    console.log(currentData);
     const conditionContainer = document.createElement("div");
 
     const humidityContainer = document.createElement("div");

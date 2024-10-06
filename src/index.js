@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { requestsController } from "./components/requests-manager";
 import { domController } from "./components/dom-manager";
 import { setIconClass } from "./components/icon-manager";
+import "./styles.css";
 
 domController.initiateDom();
 setIconClass();

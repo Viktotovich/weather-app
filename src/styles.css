@@ -1,0 +1,10 @@
+.temperature-toggle {
+  margin: 1rem 0 0 0;
+}
+
+.selectedTemp {
+  transform: scale(1.2);
+  color: white;
+  background-color: green;
+  padding: 0.2rem;
+}
