@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { dataProcessor, requestsController } from "./requests-manager";
+import { requestsController } from "./requests-manager";
 import capitals from "./json/capitals.json";
 import { iconFinder } from "./icon-manager";
 
@@ -53,11 +53,11 @@ const domController = {
   receiveReply: function ({ currentPeriod, weatherPeriod }) {
     console.log(currentPeriod, weatherPeriod);
 
-    currentWeatherController.processCurrentWeather(currentPeriod[0]);
     savedCurrentData = currentPeriod[0];
+    currentWeatherController.processCurrentWeather(currentPeriod[0]);
 
-    weatherPeriodController.processWeatherPeriod(weatherPeriod[0]);
     savedPeriodData = weatherPeriod[0];
+    weatherPeriodController.processWeatherPeriod(weatherPeriod);
   },
   fillSuggestions: function (suggestionContainer) {
     Object.values(capitals).forEach((capital) => {
@@ -85,7 +85,6 @@ const domController = {
 
 const currentWeatherController = {
   processCurrentWeather: function (data) {
-    //forEach weatherPeriod's hour create a weather card, and append it. You need icons for this
     const cityName = document.querySelector("#city-name");
     const localTime = document.querySelector("#local-time");
     const currentTemp = document.querySelector(".current-temp");
@@ -208,10 +207,78 @@ const currentWeatherController = {
 };
 
 const weatherPeriodController = {
+  //this will have to process the current weather data's hourly cards
+  cardIndex: 0,
   processWeatherPeriod: function (weatherPeriodData) {
-    //
+    const weatherCardContainer = document.querySelector(
+      ".weather-card-container"
+    );
+
+    weatherCardContainer.textContent = "";
+    this.cardIndex *= 0;
+    console.log(weatherPeriodData);
+
+    weatherPeriodData.forEach((obj) => {
+      this.createCard(obj, weatherCardContainer, this.cardIndex);
+    });
+  },
+  createCard: function (data, location, cardIndex) {
+    const weatherCard = document.createElement("div");
+    const temp = document.createElement("div");
+
+    const cardFooter = document.createElement("div");
+    const conditionContainer = document.createElement("div");
+    const status = document.createElement("div");
+    const date = document.createElement("div");
+    const moreInfo = document.createElement("div");
+
+    weatherCard.style.backgroundImage = `url(${iconFinder.processBackgroundIcon(
+      data.icon
+    )})`;
+
+    temp.textContent = data.getUserPreferredTemp(
+      "dayTemp",
+      preferredTemparature
+    );
+    status.textContent = data.conditions;
+    date.textContent = data.dateTime;
+    moreInfo.textContent = "See more info...";
+
+    location.appendChild(weatherCard);
+    weatherCard.appendChild(temp);
+    weatherCard.appendChild(cardFooter);
+
+    cardFooter.appendChild(conditionContainer);
+    conditionContainer.appendChild(status);
+    conditionContainer.appendChild(date);
+    cardFooter.appendChild(moreInfo);
+
+    weatherCard.classList.add("weather-card");
+    temp.classList.add("temp-on-weather-card");
+    cardFooter.classList.add("card-footer");
+    conditionContainer.classList.add("condition-container");
+    status.classList.add("status-on-weather-card");
+    date.classList.add("date");
+    moreInfo.classList.add("more-info");
+    moreInfo.setAttribute("id", `card-index:${cardIndex}`);
+
+    moreInfo.addEventListener("click", weatherPeriodController.openMoreInfo);
+  },
+  openMoreInfo: function (e) {
+    const modalSpace = document.querySelector(".modal-space");
+    const modal = document.createElement("dialog");
+    weatherPeriodController.createMoreInfoCard(savedPeriodData, modal, e);
+
+    modalSpace.textContent = "";
+    modalSpace.appendChild(modal);
+
+    modal.showModal();
+  },
+  createMoreInfoCard: function (data, modal, e) {
+    // make a separate function that get's the ID of e and cuts it in such a way that we're left with just the index
   },
 };
+
 const errorChecker = {
   searchErrorDisplay: document.querySelector("#search-error-display"),
   clearErrorDisplay: function () {

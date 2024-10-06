@@ -88,6 +88,9 @@ const iconFinder = {
     const icon = this.processCondition(`${humidityLevel}Humidity`);
     return icon;
   },
+  processBackgroundIcon: function (iconName) {
+    return weatherIcons[iconName];
+  },
 };
 
 export { setIconClass, iconFinder };
