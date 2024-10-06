@@ -1,21 +1,25 @@
 /* eslint-disable */
 import { dataProcessor, requestsController } from "./requests-manager";
-//requestsController.createRequest("dubai");
-
 import capitals from "./json/capitals.json";
 import { iconFinder } from "./icon-manager";
 
-// This imports everything, and does not export anything except the function to initiate
-
+//To avoid Dom troubles, it's best to save the data here itself
 let preferredTemparature = "C";
+let savedCurrentData = [];
+let savedPeriodData = [];
 
 const domController = {
   initiateDom: function () {
     const suggestionContainer = document.querySelector("#search-suggestions");
     const submitSearch = document.querySelector("#submit-search");
     const toggleTemperature = document.querySelector(".temperature-toggle");
+    const moreInfoCurrent = document.querySelector(".more-info");
 
     submitSearch.addEventListener("click", domController.searchWeather);
+    moreInfoCurrent.addEventListener(
+      "click",
+      currentWeatherController.openMoreInfo
+    );
     toggleTemperature.addEventListener(
       "click",
       domController.changePreferredTemp
@@ -47,10 +51,11 @@ const domController = {
   receiveReply: function ({ currentPeriod, weatherPeriod }) {
     console.log(currentPeriod, weatherPeriod);
 
-    //process currentPeriod, and process weatherPeriod
     currentWeatherController.processCurrentWeather(currentPeriod[0]);
+    savedCurrentData = currentPeriod[0];
 
     weatherPeriodController.processWeatherPeriod(weatherPeriod[0]);
+    savedPeriodData = weatherPeriod[0];
   },
   fillSuggestions: function (suggestionContainer) {
     Object.values(capitals).forEach((capital) => {
@@ -75,7 +80,6 @@ const currentWeatherController = {
     const cityName = document.querySelector("#city-name");
     const localTime = document.querySelector("#local-time");
     const currentTemp = document.querySelector(".current-temp");
-    const moreInfo = document.querySelector(".more-info");
     const weatherDescription = document.querySelector(
       ".current-weather-description"
     );
@@ -90,12 +94,39 @@ const currentWeatherController = {
 
     //find the right icon
     currentWeatherIcon.appendChild(weatherIcon);
-
-    //TODO: Garbage collect old eventListeners, best case would be if we strip everything from index.html and add it in through DOM
-    moreInfo.addEventListener("click", currentWeatherController.openMoreInfo);
   },
   openMoreInfo: function () {
     //create a modal, the modal will contain all other information
+    const modalSpace = document.querySelector(".modal-space");
+    const modal = document.createElement("dialog");
+    const moreInfoCard = currentWeatherController.createMoreInfoCard(
+      savedCurrentData,
+      modal
+    );
+
+    modalSpace.textContent = "";
+    modalSpace.appendChild(modal);
+
+    modal.show();
+  },
+  createMoreInfoCard: function (currentData, modal) {
+    console.log(currentData);
+    const conditionContainer = document.createElement("div");
+    const feelsLikeContainer = document.createElement("div");
+    const humidityContainer = document.createElement("div");
+    const pricipContainer = document.createElement("div");
+    const sunriseTime = document.createElement("div");
+    const sunsetTime = document.createElement("div");
+    const currentTemp = document.createElement("div");
+
+    conditionContainer.textContent = currentData.conditions;
+    //paused to change C to F method
+    //feelsLikeContainer.textContent = currentData.feelsLike
+    humidityContainer.textContent = currentData.humidity;
+    pricipContainer.textContent = currentData.humidity;
+    sunriseTime.textContent = currentData.sunrise;
+    sunsetTime.textContent = currentData.sunset;
+    currentTemp.textContent = currentData.temp;
   },
 };
 
