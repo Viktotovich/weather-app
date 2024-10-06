@@ -182,7 +182,7 @@ const currentWeatherController = {
       iconFinder.processHumidity(savedCurrentData)
     );
 
-    modal.classList.add("current-data-additional-information");
+    modal.classList.add("additional-information");
     conditionContainer.classList.add("current-conditions-container");
     humidityContainer.classList.add("humidity-container");
     humidityIconContainer.classList.add("humidity-data-container");
@@ -268,23 +268,20 @@ const weatherPeriodController = {
   openMoreInfo: function (e) {
     const modalSpace = document.querySelector(".modal-space");
     const modal = document.createElement("dialog");
-    weatherPeriodController.createMoreInfoCard(savedPeriodData, modal, e);
+    const cardIndex = weatherPeriodController.getCardIndex(e);
+    const cardData = savedPeriodData[cardIndex];
+
+    //Keeping things DRY
+    currentWeatherController.createMoreInfoCard(cardData, modal);
 
     modalSpace.textContent = "";
     modalSpace.appendChild(modal);
 
     modal.showModal();
   },
-  createMoreInfoCard: function (data, modal, e) {
-    const cardIndex = weatherPeriodController.getCardIndex(e);
-    const cardData = data[cardIndex];
-
-    console.log(cardData);
-  },
   getCardIndex: function (e) {
     const idName = e.target.getAttribute("id");
     const cardIndex = idName.slice(11);
-    console.log(cardIndex);
     return cardIndex;
   },
 };
