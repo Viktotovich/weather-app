@@ -56,7 +56,7 @@ const domController = {
     savedCurrentData = currentPeriod[0];
     currentWeatherController.processCurrentWeather(currentPeriod[0]);
 
-    savedPeriodData = weatherPeriod[0];
+    savedPeriodData = weatherPeriod;
     weatherPeriodController.processWeatherPeriod(weatherPeriod);
   },
   fillSuggestions: function (suggestionContainer) {
@@ -207,7 +207,7 @@ const currentWeatherController = {
 };
 
 const weatherPeriodController = {
-  //this will have to process the current weather data's hourly cards
+  //this will have to process the current weather data's hourly cards - make hourly cards up to down
   cardIndex: 0,
   processWeatherPeriod: function (weatherPeriodData) {
     const weatherCardContainer = document.querySelector(
@@ -220,6 +220,7 @@ const weatherPeriodController = {
 
     weatherPeriodData.forEach((obj) => {
       this.createCard(obj, weatherCardContainer, this.cardIndex);
+      this.cardIndex += 1;
     });
   },
   createCard: function (data, location, cardIndex) {
@@ -275,7 +276,16 @@ const weatherPeriodController = {
     modal.showModal();
   },
   createMoreInfoCard: function (data, modal, e) {
-    // make a separate function that get's the ID of e and cuts it in such a way that we're left with just the index
+    const cardIndex = weatherPeriodController.getCardIndex(e);
+    const cardData = data[cardIndex];
+
+    console.log(cardData);
+  },
+  getCardIndex: function (e) {
+    const idName = e.target.getAttribute("id");
+    const cardIndex = idName.slice(11);
+    console.log(cardIndex);
+    return cardIndex;
   },
 };
 
