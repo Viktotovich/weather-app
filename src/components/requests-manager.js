@@ -1,10 +1,7 @@
 import apiKey from "./api-key";
 
-//dont forget F - C toggler LMAO
-
 class WeatherDay {
   constructor(json, dayIndex) {
-    //must be json.days[index] to work correctly
     this.conditions = json.conditions;
     this.dateTime = json.datetime;
 
@@ -36,6 +33,16 @@ class WeatherDay {
     this.icon = json.icon;
   }
 
+  getHumidityLevel() {
+    if (this.humidity < 50) {
+      return "low";
+    } else if (this.humidity >= 50 && this.humidity <= 70) {
+      return "medium";
+    } else {
+      return "high";
+    }
+  }
+
   convertFtoC(tempInF) {
     const tempInC = (tempInF - 32) * (5 / 9);
     return parseFloat(tempInC).toFixed(1);
@@ -51,6 +58,11 @@ class WeatherDay {
     } else {
       return json.precip;
     }
+  }
+
+  getUserPreferredTemp(data, userTemp) {
+    //i.e: dayTempMin+C
+    return this[`${data}${userTemp}`];
   }
 }
 
@@ -78,6 +90,17 @@ class CurrentWeather {
     this.description = description;
   }
 
+  //for the icons
+  getHumidityLevel() {
+    if (this.humidity < 50) {
+      return "low";
+    } else if (this.humidity >= 50 && this.humidity <= 70) {
+      return "medium";
+    } else {
+      return "high";
+    }
+  }
+
   convertFtoC(tempInF) {
     const tempInC = (tempInF - 32) * (5 / 9);
     return parseFloat(tempInC).toFixed(1);
@@ -94,6 +117,11 @@ class CurrentWeather {
   capitalizeFirstLetter(address) {
     const processedStr = address.toString();
     return processedStr.charAt(0).toUpperCase() + processedStr.slice(1);
+  }
+
+  getUserPreferredTemp(data, userTemp) {
+    //i.e: dayTempMin+C
+    return this[`${data}${userTemp}`];
   }
 }
 

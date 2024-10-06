@@ -15,12 +15,17 @@ import showersNightIcon from "./icons/showers-night.png";
 import hazyDayIcon from "./icons/hazy-day.png";
 import showersDayIcon from "./icons/showers-day.png";
 import sleetIcon from "./icons/sleet.png";
-import highHumidityIcon from "./icons/high-humidity.png";
 import blizzardIcon from "./icons/blizzard.png";
 import hailIcon from "./icons/hail.png";
 import dustStormDayIcon from "./icons/dust-storm-day.png";
 import tornadoAlertIcon from "./icons/tornado-alert.png";
 import earthquakeAlertIcon from "./icons/earthquake-alert.png";
+
+import highHumidityIcon from "./icons/high-humidity.png";
+import mediumHumidityIcon from "./icons/medium-humidity.png";
+import lowHumidityIcon from "./icons/low-humidity.png";
+import sunriseIcon from "./icons/sunrise.png";
+import sunsetIcon from "./icons/sunset.png";
 
 class WeatherIcon {
   constructor(media) {
@@ -38,6 +43,7 @@ const weatherIcons = {};
 
 function setIconClass() {
   const iconMap = {
+    //condition based icons
     snow: snowIcon,
     rain: rainIcon,
     fog: fogIcon,
@@ -51,10 +57,16 @@ function setIconClass() {
     "showers-night": showersNightIcon,
     "showers-night": showersDayIcon,
 
+    //More info based icons
+    highHumidity: highHumidityIcon,
+    mediumHumidity: mediumHumidityIcon,
+    lowHumidity: lowHumidityIcon,
+    sunrise: sunriseIcon,
+    sunset: sunsetIcon,
+
     //obsolete-icons :(
     hazyDay: hazyDayIcon,
     sleet: sleetIcon,
-    highHumidity: highHumidityIcon,
     blizzard: blizzardIcon,
     hail: hailIcon,
     dustStormDay: dustStormDayIcon,
@@ -69,8 +81,12 @@ function setIconClass() {
 
 const iconFinder = {
   processCondition: function (iconName) {
-    console.log(weatherIcons[iconName].getIcon());
     return weatherIcons[iconName].getIcon();
+  },
+  processHumidity: function (data) {
+    const humidityLevel = data.getHumidityLevel();
+    const icon = this.processCondition(`${humidityLevel}Humidity`);
+    return icon;
   },
 };
 
