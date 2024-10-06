@@ -145,6 +145,7 @@ const currentWeatherController = {
     sunsetTime.textContent = currentData.sunset;
     creditsContainer.textContent = credits;
 
+    console.log(currentData.feelsLikeF);
     feelsLike.textContent = currentData.getUserPreferredTemp(
       "feelsLike",
       preferredTemparature
@@ -209,19 +210,60 @@ const currentWeatherController = {
 const weatherPeriodController = {
   //this will have to process the current weather data's hourly cards - make hourly cards up to down
   cardIndex: 0,
+  hourIndex: 0,
   processWeatherPeriod: function (weatherPeriodData) {
     const weatherCardContainer = document.querySelector(
       ".weather-card-container"
     );
+    const weatherHoursContainer = document.querySelector(
+      ".current-hourly-breakdown"
+    );
+    const weatherHours = weatherPeriodData[0].weatherHours;
 
+    weatherHoursContainer.textContent = "";
     weatherCardContainer.textContent = "";
     this.cardIndex *= 0;
-    console.log(weatherPeriodData);
+    this.hourIndex *= 0;
 
     weatherPeriodData.forEach((obj) => {
       this.createCard(obj, weatherCardContainer, this.cardIndex);
       this.cardIndex += 1;
     });
+
+    weatherHours.forEach((hour) => {
+      console.log(hour);
+      this.createHourCard((hour, weatherHoursContainer, this.hourIndex));
+    });
+  },
+  createHourCard: function (hourObj, weatherHoursContainer, hourIndex) {
+    //extract data from hourObj, but keep it limited
+    // append the individual hourContainer to weatherHoursContainer
+    //id the hour with `hour:${hourIndex}`
+    const hourContainer = document.createElement("div");
+    const iconContainer = document.createElement("div");
+    const temp = document.createElement("span");
+
+    const additionalInfo = document.createElement("div");
+    const hourAndPrecip = document.createElement("div");
+    const hour = document.createElement("div");
+    const precipitation = document.createElement("div");
+
+    const conditionsContainer = document.createElement("div");
+    const conditions = document.createElement("div");
+    const humidity = document.createElement("div");
+
+    iconContainer.style.backgroundImage = `url(${iconFinder.processBackgroundIcon(
+      hourObj.icon
+    )})`;
+    //can't proceed due to unproccessed data, the class proto needs to extend to access the method
+    //CONTINUE HERE:
+    //temp.textContent = hourObj.
+
+    /*
+    [icon       |                     ]
+    [Temperature|    Hour      Precip ]
+    [icon       | conditions  humidity]
+    */
   },
   createCard: function (data, location, cardIndex) {
     const weatherCard = document.createElement("div");
@@ -321,7 +363,7 @@ General tasks:
 2 - Convert time to DD-MM
 3 - Promises.race([prX, setTimeoutIfPromiseDoesntReply]) - incase the data entered is wrong or there is an error in the function: use a setTimeout function to reject() and abort process.
 4 - Garbage collect promises, using .finally()
-5 - F to C and C to F toggle
-6 - More info option
+5 - F to C and C to F toggle - Partially done
+6 - More info option - Done
 
 */
