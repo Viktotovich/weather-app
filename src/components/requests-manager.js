@@ -1,9 +1,10 @@
 import apiKey from "./api-key";
+import { dateController } from "./date-handler";
 
 class WeatherDay {
   constructor(json, dayIndex) {
     this.conditions = json.conditions;
-    this.dateTime = json.datetime;
+    this.dateTime = dateController.processDate(json.datetime);
 
     this.feelsLikeMaxTempF = `${json.feelslikemax}°F`;
     this.feelsLikeMaxTempC = `${this.convertFtoC(json.feelslikemax)}°C`;
@@ -69,7 +70,7 @@ class WeatherDay {
 class CurrentWeather {
   constructor(json, address, description) {
     this.conditions = json.conditions;
-    this.dateTimePeriod = json.datetime;
+    this.dateTimePeriod = dateController.processHour(json.datetime);
 
     this.feelsLikeF = `${json.feelslike}°F`;
     this.feelsLikeC = `${this.convertFtoC(json.feelslike)}°C`;
@@ -128,6 +129,7 @@ class CurrentWeather {
 class HourPeriod {
   constructor(hour) {
     this.hoursObj = hour;
+    this.exactHour = dateController.processHour(this.hoursObj.datetime);
     this.icon = hour.icon;
     this.tempF = `${hour.temp}°F`;
     this.tempC = `${this.convertFtoC(hour.temp)}°C`;
@@ -227,6 +229,7 @@ const dataProcessor = {
   processHourPeriod: function (json) {
     this.hourIndex *= 0;
     json.days[0].hours.forEach((hour) => {
+      console.log(hour);
       let hourPeriodObj = new HourPeriod(hour);
       this.weatherHours.push(hourPeriodObj);
     });

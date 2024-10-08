@@ -315,10 +315,10 @@ const weatherHourController = {
       "temp",
       preferredTemparature
     );
-    hour.textContent = hourObj.hoursObj.datetime;
-    precipitation.textContent = hourObj.getPrecip(hourObj);
+    hour.textContent = hourObj.exactHour;
+    precipitation.textContent = `Precipitation: ${hourObj.getPrecip(hourObj)}`;
     conditions.textContent = hourObj.conditions;
-    humidity.textContent = hourObj.humidity;
+    humidity.textContent = `Humidity: ${hourObj.humidity}%`;
 
     iconContainer.style.backgroundImage = `url(${iconFinder.processBackgroundIcon(
       hourObj.icon
