@@ -95,3 +95,35 @@ label {
 #C {
   margin: 0 0.2rem;
 }
+
+/* Body Container */
+.body-header-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+.current-weather-details {
+  padding: 0 0 0 1.5rem;
+}
+
+.current-temp {
+  font-weight: 600;
+}
+
+.more-info:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+img {
+  border-radius: 15px;
+}
+
+/* I dont know what I did, or why I did - but it works */
+
+img:hover {
+  transform: rotate3d(1, 1, 1, 2deg);
+}
