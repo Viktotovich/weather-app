@@ -33,12 +33,16 @@ const domController = {
   },
   disableSearch: function () {
     const submitSearchButton = document.querySelector("#submit-search");
+    const searchDisplay = document.querySelector("#search-error-display");
+
     submitSearchButton.disabled = true;
+    searchDisplay.textContent = "Searching..";
 
     //goes in queue, waits till fetch gets the data - and only then the 3 seconds pass (I think)
     setTimeout(() => {
       submitSearchButton.disabled = false;
-    }, 3000);
+      searchDisplay.textContent = "";
+    }, 5000);
   },
   searchWeather: function (e) {
     e.preventDefault();
@@ -439,6 +443,5 @@ export { domController };
 /* TODO:
   * 1 - Make a default load, make it be Dubai - and let dom-manager make the initial request. 
   * 2 - Find a way to save the user's previous interaction via localstorage API and make it the default
-  * 3 - Limit the requests on the search button / set a limit how many times can a button be pressed in a certain time 
 
 */
