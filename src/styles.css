@@ -113,9 +113,19 @@ label {
   font-weight: 600;
 }
 
+#local-time:hover,
+.current-temp:hover,
+.current-weather-description:hover,
+.more-info:hover {
+  color: white;
+  background-color: var(--hover-color);
+  border-radius: 5px;
+  padding: 0 0.2rem;
+}
+
 .more-info:hover {
   cursor: pointer;
-  transform: scale(1.02);
+  transform: scale(1.01);
 }
 
 img {
