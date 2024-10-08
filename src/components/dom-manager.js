@@ -2,6 +2,7 @@
 import { requestsController } from "./requests-manager";
 import capitals from "./json/capitals.json";
 import { iconFinder } from "./icon-manager";
+import { sub } from "date-fns";
 
 //To avoid Dom troubles, it's best to save the data here itself
 let preferredTemparature = "C";
@@ -30,10 +31,21 @@ const domController = {
 
     this.fillSuggestions(suggestionContainer);
   },
+  disableSearch: function () {
+    const submitSearchButton = document.querySelector("#submit-search");
+    submitSearchButton.disabled = true;
+
+    //goes in queue, waits till fetch gets the data - and only then the 3 seconds pass (I think)
+    setTimeout(() => {
+      submitSearchButton.disabled = false;
+    }, 3000);
+  },
   searchWeather: function (e) {
     e.preventDefault();
     const searchInput = document.querySelector("#search");
     const searchValue = searchInput.value;
+
+    domController.disableSearch();
 
     if (errorChecker.checkInput(searchInput) === true) {
       searchInput.setAttribute("class", "valid-search");
@@ -428,13 +440,5 @@ export { domController };
   * 1 - Make a default load, make it be Dubai - and let dom-manager make the initial request. 
   * 2 - Find a way to save the user's previous interaction via localstorage API and make it the default
   * 3 - Limit the requests on the search button / set a limit how many times can a button be pressed in a certain time 
-  * 4 - Connect Gify API 
 
-General tasks:
-3 - Promises.race([prX, setTimeoutIfPromiseDoesntReply]) - incase the data entered is wrong or there is an error in the function: use a setTimeout function to reject() and abort process.
-4 - Garbage collect promises, using .finally()
-
-
-5 - Reset every single DOM upon new search - as right now changing C to F or making a new search just clutters everything.
-6 - Prevent from F/C toggle from blowing up if nothing is included 
 */
