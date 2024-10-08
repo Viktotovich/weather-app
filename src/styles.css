@@ -1,10 +1,97 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #cffafe;
+  --secondary-color: #ede9fe;
+  --tercery-color: #e2e8f0;
+  --font-color-main: #0f172a;
+  --hover-color: #94a3b8;
+  color: var(--font-color-main);
+  font-family: "Roboto", sans-serif;
+}
+
+/* Header */
+#header-container {
+  background-color: var(--tercery-color);
+  padding: 1.3rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-container {
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+label {
+  margin: 0 0.6rem 0 0;
+}
+
+#search {
+  appearance: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0.1rem 0 0.1rem 0.3rem;
+}
+
+/* I tried to fix this but it still okay-ish, can be better */
+#search-error-display {
+  font-size: 0.6rem;
+  text-align: center;
+  position: absolute;
+  border-bottom: 1px dashed black;
+  top: 3px;
+}
+
+#submit-search {
+  appearance: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  margin-left: 0.2rem;
+  padding: 0.1rem 0.3rem;
+  color: white;
+  background-color: var(--hover-color);
+}
+
+#submit-search:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
 .temperature-toggle {
   margin: 1rem 0 0 0;
+  font-size: 0.75rem;
+}
+
+.temperature-toggle:hover {
+  cursor: pointer;
+}
+
+#F:hover,
+#C:hover {
+  text-decoration: underline;
 }
 
 .selectedTemp {
   transform: scale(1.2);
   color: white;
-  background-color: green;
+  background-color: var(--hover-color);
+  border-radius: 5px;
   padding: 0.2rem;
+}
+
+#F,
+#C {
+  margin: 0 0.2rem;
 }
