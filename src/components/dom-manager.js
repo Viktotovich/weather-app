@@ -7,6 +7,7 @@ import { iconFinder } from "./icon-manager";
 let preferredTemparature = "C";
 let savedCurrentData = [];
 let savedPeriodData = [];
+let savedHourlyData = [];
 let credits =
   "Special thanks to Virtual Crossing, and their API for allowing the project to exist! All images are created with Canva Pro.";
 
@@ -50,8 +51,11 @@ const domController = {
       searchInput.setAttribute("class", "invalid-search");
     }
   },
-  receiveReply: function ({ currentPeriod, weatherPeriod }) {
-    console.log(currentPeriod, weatherPeriod);
+  receiveReply: function ({ currentPeriod, weatherPeriod, hourPeriod }) {
+    console.log(currentPeriod, weatherPeriod, hourPeriod);
+
+    savedHourlyData = hourPeriod;
+    weatherHourController.processHours(savedHourlyData);
 
     savedCurrentData = currentPeriod[0];
     currentWeatherController.processCurrentWeather(currentPeriod[0]);
@@ -210,61 +214,20 @@ const currentWeatherController = {
 const weatherPeriodController = {
   //this will have to process the current weather data's hourly cards - make hourly cards up to down
   cardIndex: 0,
-  hourIndex: 0,
   processWeatherPeriod: function (weatherPeriodData) {
     const weatherCardContainer = document.querySelector(
       ".weather-card-container"
     );
-    const weatherHoursContainer = document.querySelector(
-      ".current-hourly-breakdown"
-    );
-    const weatherHours = weatherPeriodData[0].weatherHours;
 
-    weatherHoursContainer.textContent = "";
     weatherCardContainer.textContent = "";
     this.cardIndex *= 0;
-    this.hourIndex *= 0;
 
     weatherPeriodData.forEach((obj) => {
       this.createCard(obj, weatherCardContainer, this.cardIndex);
       this.cardIndex += 1;
     });
-
-    weatherHours.forEach((hour) => {
-      console.log(hour);
-      this.createHourCard((hour, weatherHoursContainer, this.hourIndex));
-    });
   },
-  createHourCard: function (hourObj, weatherHoursContainer, hourIndex) {
-    //extract data from hourObj, but keep it limited
-    // append the individual hourContainer to weatherHoursContainer
-    //id the hour with `hour:${hourIndex}`
-    const hourContainer = document.createElement("div");
-    const iconContainer = document.createElement("div");
-    const temp = document.createElement("span");
 
-    const additionalInfo = document.createElement("div");
-    const hourAndPrecip = document.createElement("div");
-    const hour = document.createElement("div");
-    const precipitation = document.createElement("div");
-
-    const conditionsContainer = document.createElement("div");
-    const conditions = document.createElement("div");
-    const humidity = document.createElement("div");
-
-    iconContainer.style.backgroundImage = `url(${iconFinder.processBackgroundIcon(
-      hourObj.icon
-    )})`;
-    //can't proceed due to unproccessed data, the class proto needs to extend to access the method
-    //CONTINUE HERE:
-    //temp.textContent = hourObj.
-
-    /*
-    [icon       |                     ]
-    [Temperature|    Hour      Precip ]
-    [icon       | conditions  humidity]
-    */
-  },
   createCard: function (data, location, cardIndex) {
     const weatherCard = document.createElement("div");
     const temp = document.createElement("div");
@@ -325,6 +288,48 @@ const weatherPeriodController = {
     const idName = e.target.getAttribute("id");
     const cardIndex = idName.slice(11);
     return cardIndex;
+  },
+};
+
+const weatherHourController = {
+  weatherHourController: document.querySelector(".current-hourly-breakdown"),
+  processHours: function (json) {
+    json.forEach((hour) => {
+      console.log(json);
+      this.createHourCard(hour, this.weatherHourController);
+    });
+  },
+  createHourCard: function (hourObj, weatherHoursContainer) {
+    //extract data from hourObj, but keep it limited
+    // append the individual hourContainer to weatherHoursContainer
+    //id the hour with `hour:${hourIndex}`
+    const hourContainer = document.createElement("div");
+    const iconContainer = document.createElement("div");
+    const temp = document.createElement("span");
+
+    const additionalInfo = document.createElement("div");
+    const hourAndPrecip = document.createElement("div");
+    const hour = document.createElement("div");
+    const precipitation = document.createElement("div");
+
+    const conditionsContainer = document.createElement("div");
+    const conditions = document.createElement("div");
+    const humidity = document.createElement("div");
+
+    iconContainer.style.backgroundImage = `url(${iconFinder.processBackgroundIcon(
+      hourObj.icon
+    )})`;
+
+    console.log(hourObj);
+    //can't proceed due to unproccessed data, the class proto needs to extend to access the method
+    //CONTINUE HERE:
+    //temp.textContent = hourObj.
+
+    /*
+    [icon       |                     ]
+    [Temperature|    Hour      Precip ]
+    [icon       | conditions  humidity]
+    */
   },
 };
 

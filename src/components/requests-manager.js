@@ -125,6 +125,19 @@ class CurrentWeather {
   }
 }
 
+class HourPeriod extends CurrentWeather {
+  constructor(hour) {
+    super();
+    this.hoursObj = hour;
+    this.icon = hour.icon;
+    this.tempF = `${hour.temp}°F`;
+    this.tempC = `${super.convertFtoC(this.tempF)}°C`;
+    this.precip = hour.precip;
+    this.conditions = hour.conditions;
+    this.humidity = hour.humidity;
+  }
+}
+
 const requestsController = {
   requestLink:
     "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/",
@@ -143,8 +156,11 @@ const requestsController = {
         //maybe return this - so it can be picked-up at receiveReply on DOM?
         const currentPeriod = await dataProcessor.processCurrent(json);
         const weatherPeriod = await dataProcessor.processDataPeriod(json);
+        const hourPeriod = await dataProcessor.processHourPeriod(json);
 
-        return { currentPeriod, weatherPeriod };
+        console.log(hourPeriod);
+
+        return { currentPeriod, weatherPeriod, hourPeriod };
       } else {
         throw new Error(
           `The request was rejected! HTTP Status: ${data.status}`
@@ -160,9 +176,9 @@ const dataProcessor = {
   //aka - weatherDay
   weatherPeriod: [],
   currentPeriod: [],
+  weatherHours: [],
   dayIndex: 0,
   processCurrent: function (json) {
-    console.log(json);
     const currentConditionsObj = new CurrentWeather(
       json.currentConditions,
       json.address,
@@ -181,6 +197,14 @@ const dataProcessor = {
       this.weatherPeriod.push(dayObj);
     });
     return this.weatherPeriod;
+  },
+  processHourPeriod: function (json) {
+    this.hourIndex *= 0;
+    json.days[0].hours.forEach((hour) => {
+      let hourPeriodObj = new HourPeriod(hour);
+      this.weatherHours.push(hourPeriodObj);
+    });
+    return this.weatherHours;
   },
   resetWeatherPeriod: function () {
     dataProcessor.weatherPeriod = [];
