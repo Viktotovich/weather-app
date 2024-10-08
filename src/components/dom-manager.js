@@ -149,7 +149,6 @@ const currentWeatherController = {
     sunsetTime.textContent = currentData.sunset;
     creditsContainer.textContent = credits;
 
-    console.log(currentData.feelsLikeF);
     feelsLike.textContent = currentData.getUserPreferredTemp(
       "feelsLike",
       preferredTemparature
@@ -295,7 +294,6 @@ const weatherHourController = {
   weatherHourController: document.querySelector(".current-hourly-breakdown"),
   processHours: function (json) {
     json.forEach((hour) => {
-      console.log(json);
       this.createHourCard(hour, this.weatherHourController);
     });
   },

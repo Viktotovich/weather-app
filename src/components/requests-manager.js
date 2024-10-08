@@ -125,16 +125,47 @@ class CurrentWeather {
   }
 }
 
-class HourPeriod extends CurrentWeather {
+class HourPeriod {
   constructor(hour) {
-    super();
     this.hoursObj = hour;
     this.icon = hour.icon;
     this.tempF = `${hour.temp}°F`;
-    this.tempC = `${super.convertFtoC(this.tempF)}°C`;
+    this.tempC = `${this.convertFtoC(this.tempF)}°C`;
     this.precip = hour.precip;
     this.conditions = hour.conditions;
     this.humidity = hour.humidity;
+  }
+
+  getHumidityLevel() {
+    if (this.humidity < 50) {
+      return "low";
+    } else if (this.humidity >= 50 && this.humidity <= 70) {
+      return "medium";
+    } else {
+      return "high";
+    }
+  }
+
+  convertFtoC(tempInF) {
+    const tempInC = (tempInF - 32) * (5 / 9);
+    return parseFloat(tempInC).toFixed(1);
+  }
+
+  getPrecip(json) {
+    if (json.precip === null) {
+      return 0;
+    } else {
+      return json.precip;
+    }
+  }
+
+  capitalizeFirstLetter(address) {
+    const processedStr = address.toString();
+    return processedStr.charAt(0).toUpperCase() + processedStr.slice(1);
+  }
+
+  getUserPreferredTemp(data, userTemp) {
+    return this[`${data}${userTemp}`];
   }
 }
 
