@@ -291,16 +291,13 @@ const weatherPeriodController = {
 };
 
 const weatherHourController = {
-  weatherHourController: document.querySelector(".current-hourly-breakdown"),
+  weatherHourContainer: document.querySelector(".current-hourly-breakdown"),
   processHours: function (json) {
     json.forEach((hour) => {
-      this.createHourCard(hour, this.weatherHourController);
+      this.createHourCard(hour, this.weatherHourContainer);
     });
   },
   createHourCard: function (hourObj, weatherHoursContainer) {
-    //extract data from hourObj, but keep it limited
-    // append the individual hourContainer to weatherHoursContainer
-    //id the hour with `hour:${hourIndex}`
     const hourContainer = document.createElement("div");
     const iconContainer = document.createElement("div");
     const temp = document.createElement("span");
@@ -314,20 +311,48 @@ const weatherHourController = {
     const conditions = document.createElement("div");
     const humidity = document.createElement("div");
 
+    temp.textContent = hourObj.getUserPreferredTemp(
+      "temp",
+      preferredTemparature
+    );
+    hour.textContent = hourObj.hoursObj.datetime;
+    precipitation.textContent = hourObj.getPrecip(hourObj);
+    conditions.textContent = hourObj.conditions;
+    humidity.textContent = hourObj.humidity;
+
     iconContainer.style.backgroundImage = `url(${iconFinder.processBackgroundIcon(
       hourObj.icon
     )})`;
-
-    console.log(hourObj);
-    //can't proceed due to unproccessed data, the class proto needs to extend to access the method
-    //CONTINUE HERE:
-    //temp.textContent = hourObj.
 
     /*
     [icon       |                     ]
     [Temperature|    Hour      Precip ]
     [icon       | conditions  humidity]
     */
+
+    weatherHoursContainer.appendChild(hourContainer);
+    hourContainer.appendChild(iconContainer);
+    hourContainer.appendChild(additionalInfo);
+    iconContainer.appendChild(temp);
+
+    additionalInfo.appendChild(hourAndPrecip);
+    additionalInfo.appendChild(conditionsContainer);
+
+    hourAndPrecip.appendChild(hour);
+    hourAndPrecip.appendChild(precipitation);
+
+    conditionsContainer.appendChild(conditions);
+    conditionsContainer.appendChild(humidity);
+
+    weatherHoursContainer.classList.add("weather-hours-container");
+    hourContainer.classList.add("hour-container");
+    iconContainer.classList.add("icon-container");
+    additionalInfo.classList.add("additional-info-container");
+    hourAndPrecip.classList.add("hour-and-precip-container");
+    hour.classList.add("hour");
+    precipitation.classList.add("precipitation-on-card");
+    conditions.classList.add("conditions-on-card");
+    humidity.classList.add("humidity-on-card");
   },
 };
 

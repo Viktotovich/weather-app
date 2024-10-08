@@ -130,7 +130,7 @@ class HourPeriod {
     this.hoursObj = hour;
     this.icon = hour.icon;
     this.tempF = `${hour.temp}°F`;
-    this.tempC = `${this.convertFtoC(this.tempF)}°C`;
+    this.tempC = `${this.convertFtoC(hour.temp)}°C`;
     this.precip = hour.precip;
     this.conditions = hour.conditions;
     this.humidity = hour.humidity;
@@ -157,11 +157,6 @@ class HourPeriod {
     } else {
       return json.precip;
     }
-  }
-
-  capitalizeFirstLetter(address) {
-    const processedStr = address.toString();
-    return processedStr.charAt(0).toUpperCase() + processedStr.slice(1);
   }
 
   getUserPreferredTemp(data, userTemp) {
