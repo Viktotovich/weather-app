@@ -74,16 +74,37 @@ const domController = {
   changePreferredTemp: function () {
     const fUnit = document.querySelector("#F");
     const cUnit = document.querySelector("#C");
+    //if this isn't done, the milisecond while things are loading allows the users to blow everything up by switching F/C
+    const isAvailable = domController.failSafeTest();
 
     if (preferredTemparature === "C") {
       preferredTemparature = "F";
       cUnit.removeAttribute("class");
       fUnit.setAttribute("class", "selectedTemp");
+      if (isAvailable === true) {
+        domController.resetTempDisplays();
+      }
     } else {
       preferredTemparature = "C";
       fUnit.removeAttribute("class");
       cUnit.setAttribute("class", "selectedTemp");
+      if (isAvailable === true) {
+        domController.resetTempDisplays();
+      }
     }
+  },
+  failSafeTest: function () {
+    const currentTemp = document.querySelector(".current-temp");
+    if (currentTemp.firstChild === null) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+  resetTempDisplays: function () {
+    weatherHourController.processHours(savedHourlyData);
+    currentWeatherController.processCurrentWeather(savedCurrentData);
+    weatherPeriodController.processWeatherPeriod(savedPeriodData);
   },
 };
 
@@ -100,23 +121,36 @@ const currentWeatherController = {
 
     currentWeatherIcon.textContent = "";
     localTime.textContent = data.dateTimePeriod;
-    currentTemp.textContent = data.tempC;
+    currentTemp.textContent = data.getUserPreferredTemp(
+      "temp",
+      preferredTemparature
+    );
     cityName.textContent = data.address;
     weatherDescription.textContent = data.description;
 
     currentWeatherIcon.appendChild(weatherIcon);
   },
   openMoreInfo: function () {
+    const isReady = domController.failSafeTest();
+    if (isReady === true) {
+      const modalSpace = document.querySelector(".modal-space");
+      const modal = document.createElement("dialog");
+      currentWeatherController.createMoreInfoCard(savedCurrentData, modal);
+
+      modalSpace.textContent = "";
+      modalSpace.appendChild(modal);
+
+      modal.showModal();
+    }
+  },
+  closeModal: function () {
     const modalSpace = document.querySelector(".modal-space");
-    const modal = document.createElement("dialog");
-    currentWeatherController.createMoreInfoCard(savedCurrentData, modal);
 
     modalSpace.textContent = "";
-    modalSpace.appendChild(modal);
-
-    modal.showModal();
   },
   createMoreInfoCard: function (currentData, modal) {
+    const closeModalButton = document.createElement("div");
+
     const conditionContainer = document.createElement("div");
 
     const humidityContainer = document.createElement("div");
@@ -142,6 +176,12 @@ const currentWeatherController = {
     const pricip = document.createElement("div");
     const creditsContainer = document.createElement("div");
 
+    closeModalButton.addEventListener(
+      "click",
+      currentWeatherController.closeModal
+    );
+
+    closeModalButton.textContent = "x";
     conditionContainer.textContent = currentData.conditions;
     humidity.textContent = currentData.humidity;
     pricip.textContent = currentData.pricip;
@@ -200,7 +240,9 @@ const currentWeatherController = {
     sunsetContainer.classList.add("sunsetContainer");
     pricip.classList.add("current-pricip");
     creditsContainer.classList.add("credits-container");
+    closeModalButton.classList.add("close-modal-button");
 
+    modal.appendChild(closeModalButton);
     modal.appendChild(sunStatusContainer);
     modal.appendChild(tempContainer);
     modal.appendChild(humidityContainer);
@@ -293,6 +335,7 @@ const weatherPeriodController = {
 const weatherHourController = {
   weatherHourContainer: document.querySelector(".current-hourly-breakdown"),
   processHours: function (json) {
+    this.weatherHourContainer.textContent = "";
     json.forEach((hour) => {
       this.createHourCard(hour, this.weatherHourContainer);
     });
@@ -315,6 +358,7 @@ const weatherHourController = {
       "temp",
       preferredTemparature
     );
+
     hour.textContent = hourObj.exactHour;
     precipitation.textContent = `Precipitation: ${hourObj.getPrecip(hourObj)}`;
     conditions.textContent = hourObj.conditions;
@@ -387,11 +431,10 @@ export { domController };
   * 4 - Connect Gify API 
 
 General tasks:
-1 - Date-fns (but find a way to work without it)
-2 - Convert time to DD-MM
 3 - Promises.race([prX, setTimeoutIfPromiseDoesntReply]) - incase the data entered is wrong or there is an error in the function: use a setTimeout function to reject() and abort process.
 4 - Garbage collect promises, using .finally()
-5 - F to C and C to F toggle - Partially done
-6 - More info option - Done
 
+
+5 - Reset every single DOM upon new search - as right now changing C to F or making a new search just clutters everything.
+6 - Prevent from F/C toggle from blowing up if nothing is included 
 */
