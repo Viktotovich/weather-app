@@ -32,6 +32,7 @@ class WeatherDay {
     this.weatherHours = json.hours;
     this.dayIndex = dayIndex;
     this.icon = json.icon;
+    this.type = "General";
   }
 
   getHumidityLevel() {
@@ -89,6 +90,7 @@ class CurrentWeather {
 
     this.address = this.capitalizeFirstLetter(address);
     this.description = description;
+    this.type = "Current";
   }
 
   //for the icons

@@ -323,6 +323,7 @@ dialog {
   right: 10%;
   left: 10%;
   top: 20%;
+  border-radius: 15px;
 }
 
 dialog::backdrop {
@@ -332,5 +333,68 @@ dialog::backdrop {
 .sun-status-container {
   display: flex;
   justify-content: space-between;
-  margin-top: 1rem;
+  margin: 1rem 0;
+}
+
+.sunrise-time,
+.sunset-time {
+  text-align: center;
+  color: black;
+  border-radius: 5px;
+  background-color: var(--tercery-color);
+  padding: 0.1rem 0;
+}
+
+.current-temp-text,
+.feels-like-container {
+  padding: 0.3rem 3rem 0 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.feels-like {
+  font-weight: bold;
+}
+
+.humidity-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+
+.humidity {
+  font-size: 2rem;
+}
+
+.humidity::after {
+  content: "%";
+}
+
+.current-conditions-container,
+.current-pricip {
+  padding: 0 3rem 0 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.current-conditions-container::before {
+  content: "Current Conditions are: ";
+}
+
+.current-pricip::before {
+  content: "Chance of rain: ";
+}
+
+.current-pricip {
+  margin: 0 0 2rem 0;
+}
+
+.credits-container {
+  padding: 2rem 0;
+  font-size: 0.7rem;
+}
+
+.close-modal-button:hover {
+  cursor: pointer;
 }

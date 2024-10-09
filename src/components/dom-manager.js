@@ -207,16 +207,13 @@ const currentWeatherController = {
     sunsetTime.textContent = currentData.sunset;
     creditsContainer.textContent = credits;
 
-    feelsLike.textContent = currentData.getUserPreferredTemp(
-      "feelsLike",
-      preferredTemparature
+    currentWeatherController.addTemperatureData(
+      feelsLike,
+      feelsLikeText,
+      currentTemp,
+      currentData
     );
-    feelsLikeText.textContent = "The temperature feels like:";
 
-    currentTemp.textContent = currentData.getUserPreferredTemp(
-      "temp",
-      preferredTemparature
-    );
     currentTempText.textContent = "Current Temperature:";
 
     sunStatusContainer.appendChild(sunriseContainer);
@@ -231,7 +228,7 @@ const currentWeatherController = {
 
     tempContainer.appendChild(currentTempContainer);
     currentTempContainer.appendChild(currentTempText);
-    currentTempContainer.appendChild(currentTemp);
+    currentTempText.appendChild(currentTemp);
 
     tempContainer.appendChild(feelsLikeTempContainer);
     feelsLikeTempContainer.appendChild(feelsLikeText);
@@ -255,7 +252,7 @@ const currentWeatherController = {
     feelsLike.classList.add("feels-like");
     sunStatusContainer.classList.add("sun-status-container");
     sunriseContainer.classList.add("sunrise-container");
-    sunsetContainer.classList.add("sunsetContainer");
+    sunsetContainer.classList.add("sunset-container");
     pricip.classList.add("current-pricip");
     creditsContainer.classList.add("credits-container");
     closeModalButton.classList.add("close-modal-button");
@@ -272,6 +269,38 @@ const currentWeatherController = {
     modal.appendChild(conditionContainer);
     modal.appendChild(pricip);
     modal.appendChild(creditsContainer);
+  },
+  addTemperatureData: function (
+    feelsLike,
+    feelsLikeText,
+    currentTemp,
+    currentData
+  ) {
+    if (currentData.type === "General") {
+      feelsLike.textContent = currentData.getUserPreferredTemp(
+        "feelsLikeMaxTemp",
+        preferredTemparature
+      );
+      feelsLikeText.textContent = "The temperature feels like:";
+
+      currentTemp.textContent = currentData.getUserPreferredTemp(
+        "dayTemp",
+        preferredTemparature
+      );
+    } else {
+      feelsLike.textContent = currentData.getUserPreferredTemp(
+        "feelsLike",
+        preferredTemparature
+      );
+      feelsLikeText.textContent = "The temperature feels like:";
+
+      currentTemp.textContent = currentData.getUserPreferredTemp(
+        "temp",
+        preferredTemparature
+      );
+    }
+
+    console.log(currentData);
   },
 };
 
