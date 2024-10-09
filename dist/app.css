@@ -1,0 +1,403 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --primary-color: #cffafe;
+  --secondary-color: #ede9fe;
+  --tercery-color: #e2e8f0;
+  --font-color-main: #0f172a;
+  --hover-color: #94a3b8;
+  color: var(--font-color-main);
+  font-family: "Roboto", sans-serif;
+}
+
+body,
+html,
+#content {
+  height: 100%;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Header */
+#header-container {
+  background-color: var(--tercery-color);
+  padding: 1.3rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+.form-container {
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+label {
+  margin: 0 0.6rem 0 0;
+}
+
+#search {
+  appearance: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  padding: 0.1rem 0 0.1rem 0.3rem;
+}
+
+/* I tried to fix this but it still okay-ish, can be better */
+#search-error-display {
+  font-size: 0.6rem;
+  text-align: center;
+  position: absolute;
+  border-bottom: 1px dashed black;
+  top: 3px;
+}
+
+#submit-search {
+  appearance: none;
+  box-shadow: none;
+  border: none;
+  border-radius: 5px;
+  margin-left: 0.2rem;
+  padding: 0.1rem 0.3rem;
+  color: white;
+  background-color: var(--hover-color);
+}
+
+#submit-search:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+}
+
+.temperature-toggle {
+  margin: 1rem 0 0 0;
+  font-size: 0.75rem;
+}
+
+.temperature-toggle:hover {
+  cursor: pointer;
+}
+
+#F:hover,
+#C:hover {
+  text-decoration: underline;
+}
+
+.selectedTemp {
+  transform: scale(1.2);
+  color: white;
+  background-color: var(--hover-color);
+  border-radius: 5px;
+  padding: 0.2rem;
+}
+
+#F,
+#C {
+  margin: 0 0.2rem;
+}
+
+/* Body Container */
+.body-header-container {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  border-top: gainsboro 1px solid;
+  box-shadow: 0px 0px 10px gainsboro;
+}
+
+.current-weather-details {
+  padding: 0 0 0 1.5rem;
+}
+
+.current-weather-icon {
+  justify-self: end;
+}
+
+.current-temp {
+  font-weight: 600;
+}
+
+#local-time:hover,
+.current-temp:hover,
+.current-weather-description:hover,
+.more-info:hover {
+  color: white;
+  background-color: var(--hover-color);
+  border-radius: 5px;
+  padding: 0 0.2rem;
+}
+
+.more-info:hover {
+  cursor: pointer;
+  transform: scale(1.01);
+}
+
+img {
+  border-radius: 15px;
+}
+
+/* I dont know what I did, or why I did - but it works */
+
+img:hover {
+  transform: rotate3d(1, 1, 1, 2deg);
+}
+
+/* Hour Containers */
+.current-hourly-breakdown {
+  overflow: scroll;
+  max-height: 500px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+}
+
+.hour-container {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: 1fr;
+  align-items: center;
+  border-radius: 15px;
+  padding: 1rem 1.2rem;
+  margin: 0.5rem 3%;
+  border: 1px solid black;
+  background-color: var(--tercery-color);
+}
+
+.hour-container:hover {
+  background-color: var(--hover-color);
+  transform: scale(1.02);
+}
+
+.icon-container {
+  grid-area: 1 / 1 / 3 / 2;
+  padding: 1.5rem 1rem 1.5rem 1rem;
+  background-color: white;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-container span {
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  /*https://stackoverflow.com/questions/4919076/outline-effect-to-text*/
+}
+
+.additional-info-container div {
+  padding: 0 0.2rem;
+}
+
+.hour-and-precip-container {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid var(--hover-color);
+}
+
+.conditions-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.conditions-on-card {
+  margin: 0 1rem;
+}
+/*
+    [icon       |                     ]
+    [Temperature|    Hour      Precip ]
+    [icon       | conditions  humidity]
+*/
+
+/* Weather Cards */
+.weather-card-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  border-top: 1px solid black;
+  padding: 0.5rem 0.9rem;
+  position: relative;
+}
+
+.weather-card {
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hidden {
+  display: none;
+}
+
+.go-left,
+.go-right {
+  position: absolute;
+  font-size: 1.3rem;
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  padding: 0.5rem 0.7rem;
+}
+
+.go-left {
+  left: 7px;
+  top: 45%;
+}
+
+.go-right {
+  right: 7px;
+  top: 45%;
+}
+
+.go-left:hover,
+.go-right:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
+.temp-on-weather-card {
+  text-align: center;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  margin-top: 0.3rem;
+}
+
+.status-on-weather-card {
+  text-align: center;
+  background-color: var(--tercery-color);
+  margin-top: 0.3rem;
+}
+
+.date {
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+.card-footer .more-info {
+  margin: 0.3rem 0;
+  text-align: center;
+}
+
+.card-footer .more-info:hover {
+  transform: none;
+  background-color: #94a3b873;
+}
+
+/* Footer */
+#footer {
+  background-color: var(--tercery-color);
+  padding: 1.3rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer div {
+  margin: 0.7rem 0;
+}
+
+/* Modals */
+dialog {
+  position: absolute;
+  padding: 0.4rem 5rem;
+  right: 5%;
+  left: 15%;
+  top: 20%;
+  border-radius: 15px;
+}
+
+dialog::backdrop {
+  background-color: #94a3b873;
+}
+
+.sun-status-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+}
+
+.sunrise-time,
+.sunset-time {
+  text-align: center;
+  color: black;
+  border-radius: 5px;
+  background-color: var(--tercery-color);
+  padding: 0.1rem 0;
+}
+
+.current-temp-text,
+.feels-like-container {
+  padding: 0.3rem 3rem 0 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.feels-like {
+  font-weight: bold;
+}
+
+.humidity-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 2rem 0;
+}
+
+.humidity {
+  font-size: 2rem;
+}
+
+.humidity::after {
+  content: "%";
+}
+
+.current-conditions-container,
+.current-pricip {
+  padding: 0 3rem 0 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.current-conditions-container::before {
+  content: "Current Conditions are: ";
+}
+
+.current-pricip::before {
+  content: "Chance of rain: ";
+}
+
+.current-pricip {
+  margin: 0 0 2rem 0;
+}
+
+.credits-container {
+  padding: 2rem 0;
+  font-size: 0.7rem;
+}
+
+.close-modal-button:hover {
+  cursor: pointer;
+}
+
+
+/*# sourceMappingURL=app.css.map*/
