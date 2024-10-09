@@ -2,7 +2,6 @@
 import { requestsController } from "./requests-manager";
 import capitals from "./json/capitals.json";
 import { iconFinder } from "./icon-manager";
-import { sub } from "date-fns";
 
 //To avoid Dom troubles, it's best to save the data here itself
 let preferredTemparature = "C";
@@ -350,10 +349,28 @@ const weatherPeriodController = {
 
 const weatherHourController = {
   weatherHourContainer: document.querySelector(".current-hourly-breakdown"),
+  hourIndex: 0,
   processHours: function (json) {
+    const firstDozenHours = document.createElement("div");
+    const secondDozenHours = document.createElement("div");
+
     this.weatherHourContainer.textContent = "";
+    this.hourIndex *= 0;
+
+    firstDozenHours.classList.add("dozen-hours");
+    secondDozenHours.classList.add("dozen-hours");
+
+    this.weatherHourContainer.appendChild(firstDozenHours);
+    this.weatherHourContainer.appendChild(secondDozenHours);
+
     json.forEach((hour) => {
-      this.createHourCard(hour, this.weatherHourContainer);
+      if (this.hourIndex < 12) {
+        this.createHourCard(hour, firstDozenHours);
+        this.hourIndex += 1;
+      } else {
+        this.createHourCard(hour, secondDozenHours);
+        this.hourIndex += 1;
+      }
     });
   },
   createHourCard: function (hourObj, weatherHoursContainer) {
@@ -411,6 +428,7 @@ const weatherHourController = {
     hourAndPrecip.classList.add("hour-and-precip-container");
     hour.classList.add("hour");
     precipitation.classList.add("precipitation-on-card");
+    conditionsContainer.classList.add("conditions-container");
     conditions.classList.add("conditions-on-card");
     humidity.classList.add("humidity-on-card");
   },

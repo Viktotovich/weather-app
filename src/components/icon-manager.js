@@ -37,6 +37,10 @@ class WeatherIcon {
     processedIcon.src = this.media;
     return processedIcon;
   }
+
+  getIconUrl() {
+    return this.media;
+  }
 }
 
 const weatherIcons = {};
@@ -55,7 +59,7 @@ function setIconClass() {
     "clear-night": clearNightIcon,
     "thunder-rain": thunderRainIcon,
     "showers-night": showersNightIcon,
-    "showers-night": showersDayIcon,
+    "showers-day": showersDayIcon,
 
     //More info based icons
     highHumidity: highHumidityIcon,
@@ -89,7 +93,7 @@ const iconFinder = {
     return icon;
   },
   processBackgroundIcon: function (iconName) {
-    return weatherIcons[iconName];
+    return weatherIcons[iconName].getIconUrl();
   },
 };
 
