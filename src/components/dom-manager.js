@@ -270,6 +270,81 @@ const currentWeatherController = {
 const weatherPeriodController = {
   //this will have to process the current weather data's hourly cards - make hourly cards up to down
   cardIndex: 0,
+  weatherPeriodDoms: [],
+  initiateControls: function (mainContainer) {
+    const goLeftSpan = document.createElement("span");
+    const goRightSpan = document.createElement("span");
+
+    goLeftSpan.textContent = "<";
+    goRightSpan.textContent = ">";
+
+    goLeftSpan.addEventListener("click", this.goLeft);
+    goRightSpan.addEventListener("click", this.goRight);
+
+    mainContainer.appendChild(goLeftSpan);
+    mainContainer.appendChild(goRightSpan);
+
+    goLeftSpan.classList.add("go-left");
+    goRightSpan.classList.add("go-right");
+  },
+  goRight: function () {
+    console.log("here");
+    weatherPeriodController.hideDisplayedCards();
+    weatherPeriodController.increaseIndex();
+    for (
+      let i = weatherPeriodController.currentDisplayedIndex - 3;
+      i < weatherPeriodController.currentDisplayedIndex;
+      i++
+    ) {
+      console.log(i);
+      console.log(weatherPeriodController.weatherPeriodDoms[i]);
+      weatherPeriodController.weatherPeriodDoms[i].classList.remove("hidden");
+    }
+  },
+  goLeft: function () {
+    weatherPeriodController.hideDisplayedCards();
+    weatherPeriodController.decreaseIndex();
+    for (
+      let i = weatherPeriodController.currentDisplayedIndex - 3;
+      i < weatherPeriodController.currentDisplayedIndex;
+      i++
+    ) {
+      console.log(i);
+      weatherPeriodController.weatherPeriodDoms[i].classList.remove("hidden");
+    }
+  },
+  increaseIndex: function () {
+    if (this.currentDisplayedIndex >= 14) {
+      this.currentDisplayedIndex = 3;
+    } else {
+      this.currentDisplayedIndex += 3;
+    }
+  },
+  decreaseIndex: function () {
+    if (this.currentDisplayedIndex === 3) {
+      this.currentDisplayedIndex = 12;
+    } else {
+      this.currentDisplayedIndex -= 3;
+    }
+  },
+  hideDisplayedCards: function () {
+    for (
+      let i = this.currentDisplayedIndex - 3;
+      i < this.currentDisplayedIndex;
+      i++
+    ) {
+      console.log(this.weatherPeriodDoms[i]);
+      this.weatherPeriodDoms[i].classList.add("hidden");
+    }
+  },
+  currentDisplayedIndex: 3,
+  checkIndex: function () {
+    if (this.cardIndex < 3) {
+      return true;
+    } else {
+      return false;
+    }
+  },
   processWeatherPeriod: function (weatherPeriodData) {
     const weatherCardContainer = document.querySelector(
       ".weather-card-container"
@@ -277,14 +352,20 @@ const weatherPeriodController = {
 
     weatherCardContainer.textContent = "";
     this.cardIndex *= 0;
+    this.initiateControls(weatherCardContainer);
 
     weatherPeriodData.forEach((obj) => {
-      this.createCard(obj, weatherCardContainer, this.cardIndex);
+      this.createCard(
+        obj,
+        weatherCardContainer,
+        this.cardIndex,
+        this.checkIndex()
+      );
       this.cardIndex += 1;
     });
   },
 
-  createCard: function (data, location, cardIndex) {
+  createCard: function (data, location, cardIndex, isDisplayed) {
     const weatherCard = document.createElement("div");
     const temp = document.createElement("div");
 
@@ -325,6 +406,12 @@ const weatherPeriodController = {
     moreInfo.setAttribute("id", `card-index:${cardIndex}`);
 
     moreInfo.addEventListener("click", weatherPeriodController.openMoreInfo);
+
+    this.weatherPeriodDoms.push(weatherCard);
+
+    if (isDisplayed === false) {
+      weatherCard.classList.add("hidden");
+    }
   },
   openMoreInfo: function (e) {
     const modalSpace = document.querySelector(".modal-space");
