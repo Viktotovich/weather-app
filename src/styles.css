@@ -239,8 +239,33 @@ img:hover {
 .go-left,
 .go-right {
   position: absolute;
+  font-size: 1.3rem;
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  padding: 0.5rem 0.7rem;
 }
+
+.go-left {
+  left: 7px;
+  top: 45%;
+}
+
+.go-right {
+  right: 7px;
+  top: 45%;
+}
+
+.go-left:hover,
+.go-right:hover {
+  cursor: pointer;
+  transform: scale(1.02);
+}
+
 /* 
     < [Weather Cards] >
       hide the rest - visibility none
+*/
+
+/* Documented Problem:
+  Upon switching the temperature, the carousel stops working. Needs to be fixed
 */

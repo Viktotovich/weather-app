@@ -288,7 +288,6 @@ const weatherPeriodController = {
     goRightSpan.classList.add("go-right");
   },
   goRight: function () {
-    console.log("here");
     weatherPeriodController.hideDisplayedCards();
     weatherPeriodController.increaseIndex();
     for (
@@ -296,8 +295,6 @@ const weatherPeriodController = {
       i < weatherPeriodController.currentDisplayedIndex;
       i++
     ) {
-      console.log(i);
-      console.log(weatherPeriodController.weatherPeriodDoms[i]);
       weatherPeriodController.weatherPeriodDoms[i].classList.remove("hidden");
     }
   },
@@ -309,7 +306,6 @@ const weatherPeriodController = {
       i < weatherPeriodController.currentDisplayedIndex;
       i++
     ) {
-      console.log(i);
       weatherPeriodController.weatherPeriodDoms[i].classList.remove("hidden");
     }
   },
@@ -333,7 +329,6 @@ const weatherPeriodController = {
       i < this.currentDisplayedIndex;
       i++
     ) {
-      console.log(this.weatherPeriodDoms[i]);
       this.weatherPeriodDoms[i].classList.add("hidden");
     }
   },
