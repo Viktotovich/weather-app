@@ -14,6 +14,18 @@
   font-family: "Roboto", sans-serif;
 }
 
+body,
+html,
+#content {
+  height: 100%;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 /* Header */
 #header-container {
   background-color: var(--tercery-color);
@@ -225,7 +237,6 @@ img:hover {
 }
 
 .weather-card {
-  padding: 3rem 5rem;
   border-radius: 12px;
   background-size: cover;
   background-position: center;
@@ -261,11 +272,65 @@ img:hover {
   transform: scale(1.02);
 }
 
-/* 
-    < [Weather Cards] >
-      hide the rest - visibility none
-*/
+.temp-on-weather-card {
+  text-align: center;
+  font-size: 1.5rem;
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
+  margin-top: 0.3rem;
+}
 
-/* Documented Problem:
-  Upon switching the temperature, the carousel stops working. Needs to be fixed
-*/
+.status-on-weather-card {
+  text-align: center;
+  background-color: var(--tercery-color);
+  margin-top: 0.3rem;
+}
+
+.date {
+  text-align: center;
+  margin-top: 0.3rem;
+}
+
+.card-footer .more-info {
+  margin: 0.3rem 0;
+  text-align: center;
+}
+
+.card-footer .more-info:hover {
+  transform: none;
+  background-color: #94a3b873;
+}
+
+/* Footer */
+#footer {
+  background-color: var(--tercery-color);
+  padding: 1.3rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#footer div {
+  margin: 0.7rem 0;
+}
+
+/* Modals */
+dialog {
+  position: absolute;
+  padding: 0.4rem 5rem;
+  right: 10%;
+  left: 10%;
+  top: 20%;
+}
+
+dialog::backdrop {
+  background-color: #94a3b873;
+}
+
+.sun-status-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}

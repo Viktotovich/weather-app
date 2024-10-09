@@ -259,6 +259,11 @@ const currentWeatherController = {
     pricip.classList.add("current-pricip");
     creditsContainer.classList.add("credits-container");
     closeModalButton.classList.add("close-modal-button");
+    sunriseTime.classList.add("sunrise-time");
+    sunsetTime.classList.add("sunset-time");
+    feelsLikeText.classList.add("feels-like-text");
+    currentTempText.classList.add("current-temp-text");
+    humidity.classList.add("humidity");
 
     modal.appendChild(closeModalButton);
     modal.appendChild(sunStatusContainer);
