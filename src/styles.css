@@ -320,8 +320,8 @@ img:hover {
 dialog {
   position: absolute;
   padding: 0.4rem 5rem;
-  right: 10%;
-  left: 10%;
+  right: 5%;
+  left: 15%;
   top: 20%;
   border-radius: 15px;
 }

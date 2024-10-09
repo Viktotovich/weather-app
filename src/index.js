@@ -5,3 +5,4 @@ import "./styles.css";
 
 domController.initiateDom();
 setIconClass();
+domController.callTheApi("Tashkent");

@@ -53,18 +53,20 @@ const domController = {
     if (errorChecker.checkInput(searchInput) === true) {
       searchInput.setAttribute("class", "valid-search");
       errorChecker.clearErrorDisplay();
-
-      requestsController
-        .createRequest(searchValue)
-        .then((replyObj) => {
-          domController.receiveReply(replyObj);
-        })
-        .catch((err) => {
-          console.error(`${err.name} at ${err.stack}. ${err}`);
-        });
+      domController.callTheApi(searchValue);
     } else {
       searchInput.setAttribute("class", "invalid-search");
     }
+  },
+  callTheApi: function (searchValue) {
+    requestsController
+      .createRequest(searchValue)
+      .then((replyObj) => {
+        domController.receiveReply(replyObj);
+      })
+      .catch((err) => {
+        console.error(`${err.name} at ${err.stack}. ${err}`);
+      });
   },
   receiveReply: function ({ currentPeriod, weatherPeriod, hourPeriod }) {
     console.log(currentPeriod, weatherPeriod, hourPeriod);
