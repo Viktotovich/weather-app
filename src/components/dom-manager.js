@@ -68,6 +68,9 @@ const domController = {
   },
   receiveReply: function ({ currentPeriod, weatherPeriod, hourPeriod }) {
     console.log(currentPeriod, weatherPeriod, hourPeriod);
+    savedHourlyData = [];
+    savedCurrentData = [];
+    savedPeriodData = [];
 
     savedHourlyData = hourPeriod;
     weatherHourController.processHours(savedHourlyData);
@@ -306,6 +309,7 @@ const weatherPeriodController = {
       i < weatherPeriodController.currentDisplayedIndex;
       i++
     ) {
+      console.log(i);
       weatherPeriodController.weatherPeriodDoms[i].classList.remove("hidden");
     }
   },
@@ -313,14 +317,14 @@ const weatherPeriodController = {
     if (this.currentDisplayedIndex >= 14) {
       this.currentDisplayedIndex = 3;
     } else {
-      this.currentDisplayedIndex += 3;
+      this.currentDisplayedIndex += 1;
     }
   },
   decreaseIndex: function () {
-    if (this.currentDisplayedIndex === 3) {
-      this.currentDisplayedIndex = 12;
+    if (this.currentDisplayedIndex <= 3) {
+      this.currentDisplayedIndex = 14;
     } else {
-      this.currentDisplayedIndex -= 3;
+      this.currentDisplayedIndex -= 1;
     }
   },
   hideDisplayedCards: function () {

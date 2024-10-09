@@ -172,7 +172,7 @@ const requestsController = {
   key: apiKey,
   createRequest: async function (location) {
     try {
-      dataProcessor.resetWeatherPeriod();
+      dataProcessor.resetWeatherData();
 
       const data = await fetch(
         `${this.requestLink}${location}/?key=${this.key}`
@@ -235,8 +235,10 @@ const dataProcessor = {
     });
     return this.weatherHours;
   },
-  resetWeatherPeriod: function () {
+  resetWeatherData: function () {
     dataProcessor.weatherPeriod = [];
+    dataProcessor.currentPeriod = [];
+    dataProcessor.weatherHours = [];
   },
 };
 
